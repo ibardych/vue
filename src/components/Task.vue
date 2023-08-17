@@ -1,10 +1,10 @@
 <template>
-  <div :class="[task.reminder ? 'reminder' : '', 'task']">
+  <div @dblclick="$emit('toggle-reminder', task.id)" :class="[task.reminder ? 'reminder' : '', 'task']">
     <div class="text">
       {{ task.text }}
     </div>
     <div class="day">{{ task.day }}</div>
-    <i @click="onDelete(task.id)" class="fas fa-times delete"></i>
+    <i @click="$emit('delete-task', task.id)" class="fas fa-times delete"></i>
   </div>
 </template>
 
@@ -14,11 +14,12 @@ export default {
   props: {
     task: Object
   },
-  methods: {
-    onDelete(id) {
-      this.$emit('delete-task', id)
-    }
-  }
+  emits: ['delete-task', 'toggle-reminder']
+  // methods: {
+  //   onDelete(id) {
+  //     this.$emit('delete-task', id)
+  //   }
+  // }
 }
 </script>
 
@@ -27,11 +28,11 @@ export default {
     background-color: rgba(255,255,255,0.2);
     border-radius: 5px;
     box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.5);
-    width: 200px;
-    max-width: 100%;
+    width: 100%;
     padding: 10px 18px;
     position: relative;
     overflow: hidden;
+    box-sizing: border-box;
 
     &.reminder::after {
       content: "";

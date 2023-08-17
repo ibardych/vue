@@ -1,7 +1,7 @@
 <template>
   <header>
     <h1>{{title}}</h1>
-    <Button text="Add" color="#b80946" />
+    <Button @toggle-add-task="$emit('toggle-add-task')" :text="showAddTask ? 'Close' : 'Add Task'" :color="showAddTask ? '#b80946' : '#67d500'" />
   </header>
 </template>
 
@@ -14,10 +14,8 @@ export default {
     Button
   },
   props: {
-    title: {
-      type: String,
-      default: "Hello World"
-    }
+    title: String,
+    showAddTask: Boolean,
   }
 }
 </script>

@@ -1,25 +1,31 @@
 <template>
   <div class="container">
-    <Header title="Tasks" />
-    <Tasks @delete-task="deleteTask" :tasks="tasks" />
+    <Header @toggle-add-task="toggleAddTask" title="Task Tracker" :showAddTask="showAddTask" />
+    <div v-show="showAddTask">
+      <AddTask @add-task="addTask" />
+    </div>
+    <Tasks @toggle-reminder="toggleReminder" @delete-task="deleteTask" :tasks="tasks" />
   </div>
 </template>
 
 <script>
 import Header from './components/Header';
 import Tasks from './components/Tasks';
+import AddTask from './components/AddTask';
 
 export default {
   name: 'App',
   components: {
     Header,
-    Tasks
+    Tasks,
+    AddTask
   },
-  // data() {
-  //   return {
-  //     tasks
-  //   }
-  // },
+  data() {
+    return {
+      tasks: [],
+      showAddTask: false,
+    }
+  },
   created() {
     this.tasks = [
       {
@@ -43,8 +49,17 @@ export default {
     ]
   },
   methods: {
+    toggleAddTask() {
+      this.showAddTask = !this.showAddTask;
+    },
+    addTask(task) {
+      this.tasks.push(task);
+    },
     deleteTask(id) {
-      console.log(id);
+      this.tasks = this.tasks.filter((task) => task.id !== id);
+    },
+    toggleReminder(id) {
+      this.tasks = this.tasks.map((task) => task.id === id ? {...task, reminder: !task.reminder} : task);
     }
   }
 }
